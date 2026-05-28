@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       `?client=firefox` +
       `&hl=ja` +
       `&q=${encodeURIComponent(keyword)}`;
-    const response = await fetch(url);
+    const response = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0", }, });
     const data = await response.json();
     const suggestions: string[] = data[1] || [];
     const formatted = suggestions
