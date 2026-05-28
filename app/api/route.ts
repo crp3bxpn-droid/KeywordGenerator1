@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -14,8 +15,12 @@ export async function POST(req: NextRequest) {
       `?client=firefox` +
       `&hl=ja` +
       `&q=${encodeURIComponent(keyword)}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0" },
+    });
+    const text = await response.text();
+    console.log(text);
+    const data = JSON.parse(text);
     const suggestions: string[] = data[1] || [];
     const formatted = suggestions
       .map((item) => {
