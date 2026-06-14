@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const appId = process.env.RAKUTEN_APP_ID;
+    const accessKey = process.env.RAKUTEN_ACCESS_KEY;
 
     if (!appId) {
       return NextResponse.json(
@@ -24,14 +25,23 @@ export async function POST(req: NextRequest) {
     }
 
     const url =
-      `https://app.rakuten.co.jp/services/api/IchibaItem/Search/20220601` +
+      `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601` +
       `?applicationId=${appId}` +
+      `&accessKey=${accessKey}` +
       `&keyword=${encodeURIComponent(keyword)}` +
-      `&hits=20`;
+      `&hits=20` +
+      `&formatVersion=2`;
 
     const response = await fetch(url);
 
     const data = await response.json();
+
+    console.log("楽天APIレスポンス");
+    console.log(JSON.stringify(data, null, 2));
+    console.log("APP_ID:", process.env.RAKUTEN_APP_ID);
+    console.log("ACCESS_KEY:", accessKey);
+    console.log("STATUS", response.status);
+    console.log("URL", url);
 
     const items = data.Items || [];
 
