@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     const url =
-      `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601` +
+      `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260401?format=json&keyword=%E6%A5%BD%E5%A4%A9&genreId=0&applicationId=b90d08f0-fdae-4d6c-92a3-8c1b8ae62b3f&accessKey=pk_95cyALE0VDs7M2dhNjwPzeT2qMTv64DHMEuvSRGzyOt` +
       `?applicationId=${appId}` +
       `&accessKey=${accessKey}` +
       `&keyword=${encodeURIComponent(keyword)}` +
