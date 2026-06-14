@@ -3,18 +3,71 @@ import { useState } from "react";
 export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [results, setResults] = useState<string[]>([]);
+  const [mode, setMode] = useState("google");
   const [loading, setLoading] = useState(false);
   const handleGenerate = async () => {
     if (!keyword) return;
     setLoading(true);
     try {
-      const response = await fetch("/api/suggest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ keyword }),
-      });
-      const data = await response.json();
-      setResults(data.results || []);
+      let results: string[] = [];
+
+      if (mode === "google") {
+        const response = await fetch("/api/suggest", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ keyword }),
+        });
+
+        const data = await response.json();
+        results = data.results || [];
+      }
+
+      if (mode === "rakuten") {
+        const response = await fetch("/api/rakuten", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ keyword }),
+        });
+
+        const data = await response.json();
+        results = data.results || [];
+      }
+
+      if (mode === "both") {
+        const [googleRes, rakutenRes] = await Promise.all([
+          fetch("/api/suggest", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ keyword }),
+          }),
+
+          fetch("/api/rakuten", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ keyword }),
+          }),
+        ]);
+
+        const googleData = await googleRes.json();
+        const rakutenData = await rakutenRes.json();
+
+        results = [
+          ...new Set([
+            ...(googleData.results || []),
+            ...(rakutenData.results || []),
+          ]),
+        ];
+      }
+
+      setResults(results);
     } catch (error) {
       console.error(error);
       alert("取得に失敗しました");
@@ -35,6 +88,27 @@ export default function Home() {
     <main style={{ maxWidth: 600, margin: "80px auto", padding: 20 }}>
       {" "}
       <h1 style={{ marginBottom: 24 }}> SEOキーワード抽出ツール </h1>{" "}
+      <div className="mb-4 flex gap-4">
+        <label>
+          <input
+            type="radio"
+            value="google"
+            checked={mode === "google"}
+            onChange={(e) => setMode(e.target.value)}
+          />
+          Google
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="rakuten"
+            checked={mode === "rakuten"}
+            onChange={(e) => setMode(e.target.value)}
+          />
+          楽天
+        </label>
+      </div>
       <input
         type="text"
         placeholder="キーワードを入力"
