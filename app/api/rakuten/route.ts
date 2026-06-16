@@ -39,12 +39,6 @@ export async function POST(req: NextRequest) {
     console.log("STATUS", response.status);
     console.log("DATA", JSON.stringify(data, null, 2));
 
-    console.log("楽天APIレスポンス");
-    console.log(JSON.stringify(data, null, 2));
-    console.log("APP_ID:", process.env.RAKUTEN_APP_ID);
-    console.log("ACCESS_KEY:", accessKey);
-    console.log("STATUS", response.status);
-    console.log("URL", url);
     console.log("APP_ID exists:", !!process.env.RAKUTEN_APP_ID);
     console.log("ACCESS_KEY exists:", !!process.env.RAKUTEN_ACCESS_KEY);
 
