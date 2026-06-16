@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
       `&hits=20` +
       `&formatVersion=2`;
 
+    console.log("USING REFERER HEADER");
     const response = await fetch(url, {
       headers: {
         Referer: "https://keyword-generator-vdw8.vercel.app",
