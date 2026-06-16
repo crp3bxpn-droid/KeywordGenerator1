@@ -32,7 +32,11 @@ export async function POST(req: NextRequest) {
       `&hits=20` +
       `&formatVersion=2`;
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        Referer: "https://keyword-generator-vdw8.vercel.app/",
+      },
+    });
 
     const data = await response.json();
 
