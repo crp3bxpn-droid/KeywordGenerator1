@@ -39,9 +39,6 @@ export async function POST(req: NextRequest) {
     console.log("STATUS", response.status);
     console.log("DATA", JSON.stringify(data, null, 2));
 
-    console.log("APP_ID exists:", !!process.env.RAKUTEN_APP_ID);
-    console.log("ACCESS_KEY exists:", !!process.env.RAKUTEN_ACCESS_KEY);
-
     const items = data.Items || [];
 
     const formatted = items
