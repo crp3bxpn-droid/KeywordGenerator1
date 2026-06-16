@@ -36,6 +36,9 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
 
+    console.log("STATUS", response.status);
+    console.log("DATA", JSON.stringify(data, null, 2));
+
     console.log("楽天APIレスポンス");
     console.log(JSON.stringify(data, null, 2));
     console.log("APP_ID:", process.env.RAKUTEN_APP_ID);
